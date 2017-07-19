@@ -2,10 +2,12 @@ package pl.kotbinarny.licencjat.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import pl.kotbinarny.licencjat.dao.SensorDataDao;
-import pl.kotbinarny.licencjat.domain.SensorData;
+import pl.kotbinarny.licencjat.dao.SensorDao;
+import pl.kotbinarny.licencjat.dao.DataDao;
+import pl.kotbinarny.licencjat.domain.Data;
 import pl.kotbinarny.licencjat.service.api.SensorDataService;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -14,10 +16,16 @@ import java.util.List;
 @Service
 public class SensorDataServiceImpl implements SensorDataService{
     @Autowired
-    SensorDataDao sensorDataDao;
+    DataDao dataDao;
+    @Autowired
+    SensorDao sensorDao;
 
     @Override
-    public List<SensorData> findAll(){
-        return sensorDataDao.findAll();
+    public List<Data> findAll(){
+        return dataDao.findAll();
+    }
+    @Override
+    public void addData(Integer value,String NameOfSensor){
+        dataDao.save(new Data(null,new Date().toString(),value,sensorDao.findByName(NameOfSensor)));
     }
 }
