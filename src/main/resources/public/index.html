@@ -1,0 +1,76 @@
+
+<!DOCTYPE HTML>
+<html lang="en"
+xmlns="http://www.w3.org/1999/xhtml"
+xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <title>Highcharts Example</title>
+
+    <style type="text/css">
+        #container {
+            min-width: 310px;
+            max-width: 800px;
+            height: 400px;
+            margin: 0 auto
+        }
+    </style>
+</head>
+<body>
+<script src="/Highcharts-5.0.12/code/highcharts.js"></script>
+<script src="/Highcharts-5.0.12/code/modules/exporting.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+zwykly tekst
+<div id="container"></div>
+zwykly tekst
+<script type="text/javascript">
+    var valuesFromJSON=[];
+    var dataFromJSON=[];
+    $.getJSON("http://localhost:9988/data", {
+        sessionId: "1"
+    }).done(function(data) {
+        $.each(data,function(k,v) {
+            valuesFromJSON.push(v.value);
+            dataFromJSON.push(v.data)
+        });
+        console.log(valuesFromJSON);
+        Highcharts.chart('container', {
+
+            title: {
+                text: 'Solar Employment Growth by Sector, 2010-2016'
+            },
+
+            subtitle: {
+                text: 'Source: thesolarfoundation.com'
+            },
+            xAxis: {
+                categories: dataFromJSON
+            },
+            yAxis: {
+                title: {
+                    text: 'Number of Employees'
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle'
+            },
+
+
+
+            series: [{
+                name: 'Installation',
+                data: valuesFromJSON
+            }]
+
+        });
+    }).fail(function() {
+        alert("Could not reload messages!");
+    });
+
+
+
+</script>
+</body>
+</html>
