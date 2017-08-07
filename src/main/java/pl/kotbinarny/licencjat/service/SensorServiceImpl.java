@@ -22,8 +22,8 @@ public class SensorServiceImpl implements SensorService{
         return sensorDao.findByName(name);
     }
     @Override
-    public void add(String name){
+    public void add(String name,String macaddress){
         if (sensorDao.findByName(name) != null) System.out.println("addsensor: name of sensor is already in database, TODO look at this behaviour");
-        sensorDao.save(new Sensor(null,name));
+        sensorDao.save(new Sensor(null,name,macaddress));
     }
 }

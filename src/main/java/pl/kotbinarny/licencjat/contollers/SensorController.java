@@ -13,7 +13,7 @@ public class SensorController {
     @ResponseBody
     public String newDev(
             @PathVariable("name") String name) {
-        sensorServiceImpl.add(name);
+        sensorServiceImpl.add(name,null);
         return "Device:" + name + "is added to server/ check sout";
     }
 }

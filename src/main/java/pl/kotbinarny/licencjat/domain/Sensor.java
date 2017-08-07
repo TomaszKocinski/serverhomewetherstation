@@ -17,9 +17,9 @@ import javax.persistence.*;
 public class Sensor {
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    Integer idSensor;
+    Long idSensor;
     @Column(unique=true)
     String name;
-    /*@Column(unique=true)
-    String MAC;*/
+    @Column(unique=true)
+    String macaddress;
 }

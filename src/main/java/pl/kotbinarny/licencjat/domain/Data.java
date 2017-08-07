@@ -4,6 +4,7 @@ import lombok.*;
 
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 
 /**
  * Created by tkocinski on 18.07.2017.
@@ -12,15 +13,15 @@ import javax.persistence.*;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude="idSensorData")
-@EqualsAndHashCode(exclude="idSensorData")
+@ToString(exclude="idData")
+@EqualsAndHashCode(exclude="idData")
 @Entity
 public class Data {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    Integer idSensorData;
+    Long idData;
     String data;
-    Integer value;
+    BigDecimal value;
     @ManyToOne
     @JoinColumn(name = "idSensor")
     Sensor Sensor;

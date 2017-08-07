@@ -1,26 +1,30 @@
 package pl.kotbinarny.licencjat.contollers;
 
+import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import pl.kotbinarny.licencjat.domain.Data;
-import pl.kotbinarny.licencjat.service.SensorDataServiceImpl;
+import org.springframework.web.servlet.ModelAndView;
+import pl.kotbinarny.licencjat.model.DataModel;
+import pl.kotbinarny.licencjat.service.DataServiceImpl;
 
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.math.BigDecimal;
 
 @Controller
 @RequestMapping("/")
 public class HomeController {
     @Autowired
-    private SensorDataServiceImpl sensorDataService;
+    private DataServiceImpl sensorDataService;
 
 
     @RequestMapping("/greeting")
     public String home(@RequestParam(value="name", required=false, defaultValue="World") String name, Model model) {
+        String value= "dsada";
+        model.addAttribute("value",value);
         model.addAttribute("name", name);
         return "greetings";
     }
@@ -37,8 +41,8 @@ public class HomeController {
 
     @RequestMapping("/dodajprzy")
     public String dodajPrzykladoweRekordy() {
-        sensorDataService.addData(2,"test");
-        sensorDataService.addData(12,"test");
+        sensorDataService.addData(BigDecimal.valueOf(2),"test");
+        sensorDataService.addData(BigDecimal.valueOf(12),"test");
         return "ToDo";
     }
     @RequestMapping("/hello")
@@ -56,5 +60,15 @@ public class HomeController {
         return "Get a specific Foo with id=" + id*2;
     }
 
+    @RequestMapping("/person")
+    public ModelAndView handleRequest(HttpServletRequest arg0, HttpServletResponse arg1) throws Exception {
+        DataModel person = new DataModel();
+        person.setName("Person's name");
+        Gson gson = new Gson();
 
+        ModelAndView modelAndView = new ModelAndView("DataModel");
+        modelAndView.addObject("DataModel", gson.toJson(person));
+
+        return modelAndView;
+    }
 }
