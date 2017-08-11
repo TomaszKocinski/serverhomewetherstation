@@ -22,5 +22,5 @@ public class Statistics {
     Date dateTo;
     @ManyToOne
     @JoinColumn(name = "idSensor")
-    Sensor Sensor;
+    Sensor sensor;
 }

@@ -13,16 +13,16 @@ import java.math.BigDecimal;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-@ToString(exclude="idData")
-@EqualsAndHashCode(exclude="idData")
+@ToString()
+@EqualsAndHashCode()
 @Entity
 public class Data {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     Long idData;
-    String data;
+    String date;
     BigDecimal value;
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "idSensor")
-    Sensor Sensor;
+    Sensor sensor;
 }

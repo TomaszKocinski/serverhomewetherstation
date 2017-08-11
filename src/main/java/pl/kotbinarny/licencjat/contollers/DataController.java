@@ -26,9 +26,9 @@ public class DataController {
     public List<Data> getAll() {
         return dataService.findAll();
     }
-    /*@RequestMapping("/bySensor")
+    @RequestMapping("/bySensor")
     @ResponseBody
     public List<DataBySensor> getAllbySensor() {
         return dataService.findAllSortedBySensor();
-    }*/
+    }
 }

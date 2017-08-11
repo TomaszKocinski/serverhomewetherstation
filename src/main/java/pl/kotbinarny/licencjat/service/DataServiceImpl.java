@@ -32,22 +32,22 @@ public class DataServiceImpl implements DataService {
     public void addData(BigDecimal value, String NameOfSensor){
         dataDao.save(new Data(null,new Date().toString(),value,sensorDao.findByName(NameOfSensor)));
     }
-    /*public List<DataBySensor> findAllSortedBySensor(){
+    public List<DataBySensor> findAllSortedBySensor(){
         List<DataBySensor> dataBySensor=new LinkedList<>();
         List<Sensor> sensors = sensorDao.findAll();
         for(Sensor sensor:sensors){
-            List<Data> databysensortemp= dataDao.findAllBySensor(sensor.getIdSensor());
+            List<Data> databysensortemp= dataDao.findBySensor(sensor);
             if(!databysensortemp.isEmpty()){
                 List<String> date=new LinkedList<>();
                 List<BigDecimal> value=new LinkedList<>();
                 for (Data dataelement:databysensortemp){
-                    date.add(dataelement.getData());
+                    date.add(dataelement.getDate());
                     value.add(dataelement.getValue());
                 }
                 dataBySensor.add(new DataBySensor(date,value,sensor.getName()));
             }
         }
-        return null;
-    }*/
+        return dataBySensor;
+    }
 
 }

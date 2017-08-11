@@ -12,5 +12,5 @@ import java.util.List;
 public interface DataService {
     List<Data> findAll();
     void addData(BigDecimal value, String NameOfSensor);
-    //List<DataBySensor> findAllSortedBySensor();
+    List<DataBySensor> findAllSortedBySensor();
 }
