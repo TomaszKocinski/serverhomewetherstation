@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import pl.kotbinarny.licencjat.model.DataModel;
+
 import pl.kotbinarny.licencjat.service.DataServiceImpl;
 
 
@@ -60,7 +60,7 @@ public class HomeController {
         return "Get a specific Foo with id=" + id*2;
     }
 
-    @RequestMapping("/person")
+    /*@RequestMapping("/person")
     public ModelAndView handleRequest(HttpServletRequest arg0, HttpServletResponse arg1) throws Exception {
         DataModel person = new DataModel();
         person.setName("Person's name");
@@ -70,5 +70,5 @@ public class HomeController {
         modelAndView.addObject("DataModel", gson.toJson(person));
 
         return modelAndView;
-    }
+    }*/
 }

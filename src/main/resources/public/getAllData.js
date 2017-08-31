@@ -1,43 +1,47 @@
 
-
-
-
 var valuesFromJSON=[];
 var dateFromJSON=[];
 var sensor=[];
-$.getJSON("http://localhost:9988/data", {
+$.getJSON("http://localhost:9988/data/bySensor", {
     sessionId: "1"
 }).done(function(data) {
     $.each(data,function(k,v) {
-        valuesFromJSON.push(v.value);
-        dateFromJSON.push(v.data)
-    });
-    console.log(valuesFromJSON);
-    Highcharts.chart('container', {
-        title: {
-            text: 'Solar Employment Growth by Sector, 2010-2016'
-        },
-        xAxis: {
+        console.log(v);
+        var div = document.createElement('div');
+        div.id=v.sensor;
+        document.body.appendChild(div);
+        Highcharts.chart(div.id, {
             title: {
-                text: 'Data'
+                text: div.id
             },
-            categories: dateFromJSON
-        },
-        yAxis: {
-            title: {
-                text: 'Temperatura'
-            }
-        },
-        legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'middle'
-        },
-        series: [{
-            name: 'Installation',
-            data: valuesFromJSON
-        }]
+            xAxis: {
+                title: {
+                    text: 'Data'
+                },
+                categories: v.date
+            },
+            yAxis: {
+                title: {
+                    text: 'Temperatura'
+                }
+            },
+            legend: {
+                layout: 'vertical',
+                align: 'right',
+                verticalAlign: 'middle'
+            },
+            series: [{
+                name: 'Installation',
+                data: v.value
+            }]
+        });
+
     });
+
 }).fail(function() {
     alert("Could not reload messages!");
 });
+function replace_ID_and_init_Container() {
+    container.setAttribute("id",'b');
+    init_container();
+}
