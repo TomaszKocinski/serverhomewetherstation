@@ -1,4 +1,4 @@
-package pl.kotbinarny.licencjat.utills;
+package pl.kotbinarny.licencjat.dto;
 
 import lombok.*;
 
@@ -11,8 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @ToString()
 @EqualsAndHashCode()
-public class DataBySensor {
-    List<String> date;
-    List<BigDecimal> value;
+public class TemperatureBySensorDTO {
+    List<DateValueDTO> dateValue;
     String sensor;
 }

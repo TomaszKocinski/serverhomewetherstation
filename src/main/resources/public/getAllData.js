@@ -2,7 +2,7 @@
 var valuesFromJSON=[];
 var dateFromJSON=[];
 var sensor=[];
-$.getJSON("http://localhost:9988/data/bySensor", {
+$.getJSON("http://".concat(self.location.host.concat("/data/bySensor")), {
     sessionId: "1"
 }).done(function(data) {
     $.each(data,function(k,v) {
@@ -10,29 +10,67 @@ $.getJSON("http://localhost:9988/data/bySensor", {
         var div = document.createElement('div');
         div.id=v.sensor;
         document.body.appendChild(div);
-        Highcharts.chart(div.id, {
+
+
+        datavalue = [];
+        for (elem in v.dateValue) {
+            datavalue.push([v.dateValue[elem].date,v.dateValue[elem].value]);
+        }
+        console.log(datavalue);
+
+        Highcharts.stockChart(div.id, {
             title: {
                 text: div.id
             },
+            tooltip: {
+                valueSuffix: '°C'
+            },
+            rangeSelector: {
+
+                buttons: [{
+                    type: 'day',
+                    count: 1,
+                    text: '1d'
+                },{
+                    type: 'week',
+                    count: 1,
+                    text: '1w'
+                },{
+                    type: 'month',
+                    count: 1,
+                    text: '1m'
+                }, {
+                    type: 'month',
+                    count: 3,
+                    text: '3m'
+                }, {
+                    type: 'month',
+                    count: 6,
+                    text: '6m'
+                }, {
+                    type: 'ytd',
+                    text: 'YTD'
+                }, {
+                    type: 'year',
+                    count: 1,
+                    text: '1y'
+                }, {
+                    type: 'all',
+                    text: 'All'
+                }]
+            },
+
             xAxis: {
-                title: {
-                    text: 'Data'
-                },
-                categories: v.date
+                ordinal: false
             },
-            yAxis: {
-                title: {
-                    text: 'Temperatura'
-                }
-            },
-            legend: {
-                layout: 'vertical',
-                align: 'right',
-                verticalAlign: 'middle'
-            },
+
             series: [{
-                name: 'Installation',
-                data: v.value
+                name: 'Temperature',
+                data: datavalue,
+                type: 'column',
+                tooltip: {
+                    valueDecimals: 2
+                }
             }]
         });
 
@@ -41,7 +79,4 @@ $.getJSON("http://localhost:9988/data/bySensor", {
 }).fail(function() {
     alert("Could not reload messages!");
 });
-function replace_ID_and_init_Container() {
-    container.setAttribute("id",'b');
-    init_container();
-}
+

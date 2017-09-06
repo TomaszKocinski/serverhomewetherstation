@@ -1,24 +1,20 @@
 package pl.kotbinarny.licencjat.contollers;
 
-import com.google.gson.Gson;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import pl.kotbinarny.licencjat.service.DataServiceImpl;
+import pl.kotbinarny.licencjat.service.TemperatureDataServiceImpl;
 
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.math.BigDecimal;
 
 @Controller
 @RequestMapping("/")
 public class HomeController {
     @Autowired
-    private DataServiceImpl sensorDataService;
+    private TemperatureDataServiceImpl sensorDataService;
 
 
     @RequestMapping("/greeting")
@@ -31,7 +27,7 @@ public class HomeController {
     /*@GetMapping("/data")
     public String home(Model model){
         Map<String,Long> mapa = new HashMap<>();
-        for (Data i : sensorDataService.findAll()){
+        for (TemperatureData i : sensorDataService.findAll()){
             mapa.put(i.getData(),i.getValue().longValue());
         }
         model.addAttribute("mapa",mapa);
