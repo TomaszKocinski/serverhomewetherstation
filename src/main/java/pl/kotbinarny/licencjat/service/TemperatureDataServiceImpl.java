@@ -9,9 +9,12 @@ import pl.kotbinarny.licencjat.domain.Sensor;
 import pl.kotbinarny.licencjat.domain.TemperatureData;
 import pl.kotbinarny.licencjat.dto.DateValueDTO;
 import pl.kotbinarny.licencjat.dto.TemperatureBySensorDTO;
+import pl.kotbinarny.licencjat.dto.TemperatureBySensorFromToDTO;
+import pl.kotbinarny.licencjat.dto.TemperatureSensorFromToDTO;
 import pl.kotbinarny.licencjat.service.api.TemperatureDataService;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -43,7 +46,6 @@ public class TemperatureDataServiceImpl implements TemperatureDataService {
         List<TemperatureBySensorDTO> temperatureBySensor = new LinkedList<>();
         List<Sensor> sensors = sensorDao.findAll();
         for (Sensor sensor : sensors) {
-
             temperatureDataDao.findBySensor(sensor);
             List<TemperatureData> tempBySensorTemp = temperatureDataDao.findBySensor(sensor);
             if (!tempBySensorTemp.isEmpty()) {
@@ -58,10 +60,38 @@ public class TemperatureDataServiceImpl implements TemperatureDataService {
         return temperatureBySensor;
     }
 
-    public List<TemperatureBySensorDTO> findAllSortedBySensorHighAndLowerDate(){
+    public TemperatureBySensorFromToDTO findAllSortedBySensorHighAndLowerDate(LocalDateTime from, LocalDateTime to){
+        TemperatureBySensorFromToDTO temperatureBySensor = new TemperatureBySensorFromToDTO();
+        temperatureBySensor.setFrom(from);
+        temperatureBySensor.setTo(to);
+        List<Sensor> sensors = sensorDao.findAll();
+        for (Sensor sensor : sensors) {
+            //temperatureDataDao.findBySensor(sensor);
+            List<TemperatureData> tempBySensorTemp = temperatureDataDao.findBySensorAndDateGreaterThanAndDateLessThanEqual(sensor,from,to);
+            if (!tempBySensorTemp.isEmpty()) {
+                List<DateValueDTO> dateValue = new ArrayList<>();
+                for (TemperatureData tempElement : tempBySensorTemp) {
+                    dateValue.add(new DateValueDTO(tempElement.getDate().toEpochSecond(ZoneOffset.ofHours(1)) * 1000, tempElement.getValue()));
+                }
+                temperatureBySensor.getTemperatureBySensorDTOList().add(new TemperatureBySensorDTO(dateValue, sensor.getName()));
+                dateValue.sort(((o1, o2) -> (o1.getDate() > o2.getDate()) ? -1 : 1));
+            }
+        }
+        return temperatureBySensor;
 
 
+    }
+    @Override
+    public List<DateValueDTO> findAllBySensorHighAndLowerDate(Sensor sensor,LocalDateTime from, LocalDateTime to){
+        List<DateValueDTO> dateValue = new ArrayList<>();
+        List<TemperatureData> tempBySensorTemp = temperatureDataDao.findBySensorAndDateGreaterThanAndDateLessThanEqual(sensor,from,to);
+        if (!tempBySensorTemp.isEmpty()) {
 
+            for (TemperatureData tempElement : tempBySensorTemp) {
+                dateValue.add(new DateValueDTO(tempElement.getDate().toEpochSecond(ZoneOffset.ofHours(1)) * 1000, tempElement.getValue()));
+            }
+        }
+        return dateValue;
     }
 
 

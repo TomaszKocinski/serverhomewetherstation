@@ -1,34 +1,56 @@
 package pl.kotbinarny.licencjat.contollers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 import pl.kotbinarny.licencjat.domain.TemperatureData;
-import pl.kotbinarny.licencjat.service.TemperatureDataServiceImpl;
 import pl.kotbinarny.licencjat.dto.TemperatureBySensorDTO;
+import pl.kotbinarny.licencjat.dto.TemperatureBySensorFromToDTO;
+import pl.kotbinarny.licencjat.service.TemperatureDataServiceImpl;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @RestController
 @RequestMapping("/data")
 public class TemperatureDataController {
     @Autowired
-    private TemperatureDataServiceImpl dataService;
+    private TemperatureDataServiceImpl temperatureDataService;
+
     @RequestMapping(value = "/data/{val}/dev/{name}", method = RequestMethod.GET)
     @ResponseBody
     public String sendData(
             @PathVariable("val") BigDecimal value, @PathVariable("name") String name) {
-        dataService.addData(value,name);
-        return "TemperatureData:" + value +" from dev:" + name + " is recived by server";
+        temperatureDataService.addData(value, name);
+        return "TemperatureData:" + value + " from dev:" + name + " is recived by server";
     }
+
+    @RequestMapping(value = "/from/{from}/to/{to}", method = RequestMethod.GET)
+    @ResponseBody
+    public TemperatureBySensorFromToDTO getTemperatureBySensorFromToWS(
+            @PathVariable("from") String fromString, @PathVariable("to") String toString) {
+
+        LocalDateTime from=LocalDateTime.parse(fromString,DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        LocalDateTime to=LocalDateTime.parse(toString,DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        return temperatureDataService.findAllSortedBySensorHighAndLowerDate(from, to);
+    }
+
     @RequestMapping
     @ResponseBody
     public List<TemperatureData> getAll() {
-        return dataService.findAll();
+        return temperatureDataService.findAll();
     }
+
     @RequestMapping("/bySensor")
     @ResponseBody
     public List<TemperatureBySensorDTO> getAllbySensor() {
-        return dataService.findAllSortedBySensor();
+        return temperatureDataService.findAllSortedBySensor();
     }
+
+
 }
