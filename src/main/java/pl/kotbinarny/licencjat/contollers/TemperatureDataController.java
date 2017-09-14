@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import pl.kotbinarny.licencjat.domain.TemperatureData;
 import pl.kotbinarny.licencjat.dto.TemperatureBySensorDTO;
 import pl.kotbinarny.licencjat.dto.TemperatureBySensorFromToDTO;
-import pl.kotbinarny.licencjat.service.TemperatureDataServiceImpl;
+import pl.kotbinarny.licencjat.service.api.TemperatureDataService;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -20,9 +20,10 @@ import java.util.List;
 @RequestMapping("/data")
 public class TemperatureDataController {
     @Autowired
-    private TemperatureDataServiceImpl temperatureDataService;
+    private TemperatureDataService temperatureDataService;
 
-    @RequestMapping(value = "/data/{val}/dev/{name}", method = RequestMethod.GET)
+
+    @RequestMapping(value = "/{val}/{name}", method = RequestMethod.GET)
     @ResponseBody
     public String sendData(
             @PathVariable("val") BigDecimal value, @PathVariable("name") String name) {
@@ -35,8 +36,8 @@ public class TemperatureDataController {
     public TemperatureBySensorFromToDTO getTemperatureBySensorFromToWS(
             @PathVariable("from") String fromString, @PathVariable("to") String toString) {
 
-        LocalDateTime from=LocalDateTime.parse(fromString,DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        LocalDateTime to=LocalDateTime.parse(toString,DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        LocalDateTime from = LocalDateTime.parse(fromString, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
+        LocalDateTime to = LocalDateTime.parse(toString, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         return temperatureDataService.findAllSortedBySensorHighAndLowerDate(from, to);
     }
 
