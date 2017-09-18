@@ -20,6 +20,9 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Supplier;
 
 /**
  * Created by tkocinski on 18.07.2017.
@@ -54,7 +57,6 @@ public class TemperatureDataServiceImpl implements TemperatureDataService {
         List<TemperatureBySensorDTO> temperatureBySensor = new LinkedList<>();
         List<Sensor> sensors = sensorDao.findAll();
         for (Sensor sensor : sensors) {
-            temperatureDataDao.findBySensor(sensor);
             List<TemperatureData> tempBySensorTemp = temperatureDataDao.findBySensor(sensor);
             if (!tempBySensorTemp.isEmpty()) {
                 List<DateValueDTO> dateValue = new ArrayList<>();
@@ -74,7 +76,6 @@ public class TemperatureDataServiceImpl implements TemperatureDataService {
         temperatureBySensor.setTo(to);
         List<Sensor> sensors = sensorDao.findAll();
         for (Sensor sensor : sensors) {
-            //temperatureDataDao.findBySensor(sensor);
             List<TemperatureData> tempBySensorTemp = temperatureDataDao.findBySensorAndDateGreaterThanAndDateLessThanEqual(sensor, from, to);
             if (!tempBySensorTemp.isEmpty()) {
                 List<DateValueDTO> dateValue = new ArrayList<>();
@@ -86,8 +87,25 @@ public class TemperatureDataServiceImpl implements TemperatureDataService {
             }
         }
         return temperatureBySensor;
+    }
 
-
+    public <T> T findAllSortedBySensorHighAndLowerDateUniqu(Supplier<T> creator,
+                                                            BiFunction<Sensor, T, List<TemperatureData>> biFunction,
+                                                            BiConsumer<List<DateValueDTO>, String> biConsumer) {
+        T t = creator.get();
+        List<Sensor> sensors = sensorDao.findAll();
+        for (Sensor sensor : sensors) {
+            List<TemperatureData> tempBySensorTemp = biFunction.apply(sensor, t);
+            if (!tempBySensorTemp.isEmpty()) {
+                List<DateValueDTO> dateValue = new ArrayList<>();
+                for (TemperatureData tempElement : tempBySensorTemp) {
+                    dateValue.add(new DateValueDTO(tempElement.getDate().toEpochSecond(ZoneOffset.ofHours(1)) * 1000, tempElement.getValue()));
+                }
+                biConsumer.accept(dateValue, sensor.getName());
+                dateValue.sort(((o1, o2) -> (o1.getDate() > o2.getDate()) ? -1 : 1));
+            }
+        }
+        return t;
     }
 
     @Override

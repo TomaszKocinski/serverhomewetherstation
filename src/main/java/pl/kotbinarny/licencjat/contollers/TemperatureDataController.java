@@ -38,7 +38,18 @@ public class TemperatureDataController {
 
         LocalDateTime from = LocalDateTime.parse(fromString, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
         LocalDateTime to = LocalDateTime.parse(toString, DateTimeFormatter.ISO_LOCAL_DATE_TIME);
-        return temperatureDataService.findAllSortedBySensorHighAndLowerDate(from, to);
+
+//        return temperatureDataService.findAllSortedBySensorHighAndLowerDate(from, to);
+        return temperatureDataService.findAllSortedBySensorHighAndLowerDateUniqu(
+                ()->{
+                    TemperatureBySensorFromToDTO temperatureBySensor = new TemperatureBySensorFromToDTO();
+                    temperatureBySensor.setFrom(from);
+                    temperatureBySensor.setTo(to);
+                    return temperatureBySensor;
+                },
+                (sensor) -> temperatureDataDao.findBySensorAndDateGreaterThanAndDateLessThanEqual(sensor, from, to),
+
+                );
     }
 
     @RequestMapping
