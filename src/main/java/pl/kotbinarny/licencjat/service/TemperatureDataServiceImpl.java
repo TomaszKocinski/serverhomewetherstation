@@ -62,7 +62,7 @@ public class TemperatureDataServiceImpl implements TemperatureDataService {
                     dateValue.add(new DateValueDTO(tempElement.getDate().toEpochSecond(ZoneOffset.ofHours(1)) * 1000, tempElement.getValue()));
                 }
                 temperatureBySensor.add(new TemperatureBySensorDTO(dateValue, sensor.getName()));
-                dateValue.sort(((o1, o2) -> (o1.getDate() > o2.getDate()) ? -1 : 1));
+                dateValue.sort(((o1, o2) -> (o1.getDate() > o2.getDate()) ? 1 : -1));
             }
         }
         return temperatureBySensor;

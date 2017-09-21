@@ -67,7 +67,7 @@ $.getJSON("http://".concat(self.location.host.concat("/data/bySensor")), {
             series: [{
                 name: 'Temperature',
                 data: datavalue,
-                type: 'column',
+                type: 'line',
                 tooltip: {
                     valueDecimals: 2
                 }
