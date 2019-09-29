@@ -7,13 +7,21 @@ import pl.kotbinarny.licencjat.service.SensorServiceImpl;
 @RestController
 @RequestMapping("/Sensor")
 public class SensorController {
-    @Autowired
-    private SensorServiceImpl sensorServiceImpl;
+
+    private final SensorServiceImpl sensorServiceImpl;
+
+    public SensorController(SensorServiceImpl sensorServiceImpl) {
+        this.sensorServiceImpl = sensorServiceImpl;
+    }
+
     @RequestMapping(value = "/newDev/{name}", method = RequestMethod.GET)
     @ResponseBody
     public String newDev(
             @PathVariable("name") String name) {
-        sensorServiceImpl.add(name,null);
-        return "Device:" + name + "is added to server/ check sout";
+        Boolean aBoolean = sensorServiceImpl.addIfNotExist(name, null);
+        if (aBoolean) {
+            return "Device:" + name + "is already added to server, nothing was done";
+        }
+        return "Device:" + name + "is added to server.";
     }
 }

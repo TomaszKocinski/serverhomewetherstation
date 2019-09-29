@@ -25,7 +25,7 @@ import java.time.LocalDateTime;
 @Entity
 public class Statistics {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     Long idStatistics;
     BigDecimal value;
     String type;

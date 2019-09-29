@@ -37,8 +37,8 @@ public class HomeController {
 
     @RequestMapping("/dodajprzy")
     public String dodajPrzykladoweRekordy() {
-        sensorDataService.addData(BigDecimal.valueOf(2),"test");
-        sensorDataService.addData(BigDecimal.valueOf(12),"test");
+        sensorDataService.addData(BigDecimal.valueOf(2),BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE, "Dsa");
+        sensorDataService.addData(BigDecimal.valueOf(12),BigDecimal.ONE, BigDecimal.ONE, BigDecimal.ONE, "Dsa");
         return "ToDo";
     }
     @RequestMapping("/hello")

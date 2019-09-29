@@ -2,14 +2,13 @@ package pl.kotbinarny.licencjat;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.scheduling.annotation.EnableScheduling;
 
-/**
- * Created by tkocinski on 18.07.2017.
- */
 @SpringBootApplication
+@EnableScheduling
 public class Application {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
 }

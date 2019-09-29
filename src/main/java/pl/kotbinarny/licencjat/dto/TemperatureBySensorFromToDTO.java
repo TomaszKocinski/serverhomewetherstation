@@ -20,5 +20,5 @@ import java.util.List;
 public class TemperatureBySensorFromToDTO {
     LocalDateTime from;
     LocalDateTime to;
-    List<TemperatureBySensorDTO> temperatureBySensorDTOList=new ArrayList<>();
+    List<DataAndPredictionBySensorDTO> dataAndPredictionBySensorDTOList =new ArrayList<>();
 }

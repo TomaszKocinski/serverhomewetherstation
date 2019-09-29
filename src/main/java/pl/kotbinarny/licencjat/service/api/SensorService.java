@@ -7,5 +7,5 @@ import java.util.List;
 public interface SensorService{
     List<Sensor> findAll();
     Sensor findByName(String name);
-    void add(String name,String macaddress);
+    Boolean addIfNotExist(String name, String macaddress);
 }

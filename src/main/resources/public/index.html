@@ -3,21 +3,59 @@
 xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>Highcharts Example</title>
+    <title>TimeSeriesPredictions</title>
     <style type="text/css">
         #container {
             min-width: 500px;
-            max-width: 1300px;
+            max-width: 900px;
             height: 400px;
             margin: 0 auto
+        }
+        /* Style the tab */
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+        }
+
+        /* Style the buttons that are used to open the tab content */
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+        }
+
+        /* Change background color of buttons on hover */
+        .tab button:hover {
+            background-color: #ddd;
+        }
+
+        /* Create an active/current tablink class */
+        .tab button.active {
+            background-color: #ccc;
+        }
+
+        /* Style the tab content */
+        .tabcontent {
+            display: none;
+            padding: 6px 12px;
+            border: 1px solid #ccc;
+            border-top: none;
         }
     </style>
 </head>
 <body>
-<script src="/Highstock-5.0.14/code/highstock.js"></script>
-<script src="/Highstock-5.0.14/code/modules/exporting.js"></script>
+<script src="https://code.highcharts.com/stock/highstock.js"></script>
+<script src="https://code.highcharts.com/stock/modules/exporting.js"></script>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script src="getAllData.js"></script>
+Click to show data from sensors<br/>
+<div class="tab" ></div>
 
 </body>
 </html>

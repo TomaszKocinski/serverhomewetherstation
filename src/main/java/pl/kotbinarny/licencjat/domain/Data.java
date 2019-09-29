@@ -5,20 +5,13 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
 import org.springframework.data.annotation.Transient;
 
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.PrePersist;
+import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
@@ -27,23 +20,28 @@ import java.time.LocalDateTime;
  */
 @Setter
 @Getter
-@ToString
+@ToString(exclude = "sensor")
 @NoArgsConstructor
-@RequiredArgsConstructor
 @EqualsAndHashCode()
 @Entity
-public class TemperatureData {
+@Table(indexes = { @Index(name = "IDX_MYIDX1", columnList = "date,idSensor", unique = true) })
+public class Data {
     
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     Long idData;
 
-    @Transient
     LocalDateTime date;
-    
+
     @NonNull
-    BigDecimal value;
-    
+    BigDecimal temp;
+    @NonNull
+    BigDecimal pressure;
+    @NonNull
+    BigDecimal humidity;
+    @NonNull
+    BigDecimal light;
+
     @NonNull
     @ManyToOne()
     @JoinColumn(name = "idSensor")

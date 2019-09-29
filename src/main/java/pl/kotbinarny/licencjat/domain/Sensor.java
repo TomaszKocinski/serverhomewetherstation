@@ -16,7 +16,7 @@ import javax.persistence.*;
 @Entity
 public class Sensor {
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.TABLE)
     Long idSensor;
     @Column(unique=true)
     String name;

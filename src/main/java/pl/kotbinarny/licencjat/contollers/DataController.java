@@ -1,13 +1,9 @@
 package pl.kotbinarny.licencjat.contollers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
-import pl.kotbinarny.licencjat.domain.TemperatureData;
-import pl.kotbinarny.licencjat.dto.TemperatureBySensorDTO;
+import org.springframework.web.bind.annotation.*;
+import pl.kotbinarny.licencjat.domain.Data;
+import pl.kotbinarny.licencjat.dto.DataAndPredictionBySensorDTO;
 import pl.kotbinarny.licencjat.dto.TemperatureBySensorFromToDTO;
 import pl.kotbinarny.licencjat.service.api.TemperatureDataService;
 
@@ -18,17 +14,15 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/data")
-public class TemperatureDataController {
+public class DataController {
     @Autowired
     private TemperatureDataService temperatureDataService;
 
-
-    @RequestMapping(value = "/{val}/{name}", method = RequestMethod.GET)
+    @RequestMapping(value = "/{temp}/{pressure}/{humidity}/{light}/{name}", method = RequestMethod.GET)
     @ResponseBody
-    public String sendData(
-            @PathVariable("val") BigDecimal value, @PathVariable("name") String name) {
-        temperatureDataService.addData(value, name);
-        return "TemperatureData:" + value + " from dev:" + name + " is recived by server";
+    public String sendDataBMP280(
+            @PathVariable("temp") BigDecimal value, @PathVariable BigDecimal humidity, @PathVariable BigDecimal pressure, @PathVariable BigDecimal light, @PathVariable("name") String name) {
+        return temperatureDataService.addData(value, humidity, pressure, light, name).toString();
     }
 
     @RequestMapping(value = "/from/{from}/to/{to}", method = RequestMethod.GET)
@@ -43,13 +37,13 @@ public class TemperatureDataController {
 
     @RequestMapping
     @ResponseBody
-    public List<TemperatureData> getAll() {
+    public List<Data> getAll() {
         return temperatureDataService.findAll();
     }
 
     @RequestMapping("/bySensor")
     @ResponseBody
-    public List<TemperatureBySensorDTO> getAllbySensor() {
+    public List<DataAndPredictionBySensorDTO> getAllbySensor() {
         return temperatureDataService.findAllSortedBySensor();
     }
 

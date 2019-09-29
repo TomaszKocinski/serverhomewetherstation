@@ -11,7 +11,8 @@ import java.util.List;
 @NoArgsConstructor
 @ToString()
 @EqualsAndHashCode()
-public class TemperatureBySensorDTO {
+public class DataAndPredictionBySensorDTO {
     List<DateValueDTO> dateValue;
+    List<PredictionDto> predictionValue;
     String sensor;
 }

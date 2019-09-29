@@ -34,7 +34,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         List<DateValueDTO> dateValueDTOList = temperatureDataService.findAllBySensorHighAndLowerDate(sensor, from, to);
         BigDecimal sum = BigDecimal.ZERO;
         for (DateValueDTO element : dateValueDTOList) {
-            sum = sum.add(element.getValue());
+            sum = sum.add(element.getTemperature());
         }
         statistics.setValue(sum.divide(new BigDecimal(dateValueDTOList.size()),2, RoundingMode.HALF_UP));
         statisticsDao.save(statistics);
@@ -46,7 +46,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         List<DateValueDTO> dateValueDTOList = temperatureDataService.findAllBySensorHighAndLowerDate(sensor, from, to);
         BigDecimal max = BigDecimal.valueOf(-WARTOSC_POCZATKOWA);
         for (DateValueDTO element : dateValueDTOList) {
-            max=max.max(element.getValue());
+            max=max.max(element.getTemperature());
         }
         statistics.setValue(max);
         statisticsDao.save(statistics);
@@ -58,7 +58,7 @@ public class StatisticsServiceImpl implements StatisticsService {
         List<DateValueDTO> dateValueDTOList = temperatureDataService.findAllBySensorHighAndLowerDate(sensor, from, to);
         BigDecimal min = BigDecimal.valueOf(WARTOSC_POCZATKOWA);
         for (DateValueDTO element : dateValueDTOList) {
-            min=min.min(element.getValue());
+            min=min.min(element.getTemperature());
         }
         statistics.setValue(min);
         statisticsDao.save(statistics);
